@@ -12,13 +12,61 @@ const httpServer = createServer(app);
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors());
+const allowedOrigins = [
+    "http://localhost:3000",
+    "http://127.0.0.2:5500",
+];
+
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (allowedOrigins.includes(origin) || origin === undefined) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by cors"));
+        }
+    },
+    optionSuccessStatus: 200,
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 const { Server } = require("socket.io");
-const io = new Server(httpServer, {});
+const io = new Server(httpServer, { cors: { origin: "*" }, });
+
+let allRoomUsers = [];
+let re = 0;
 
 io.on("connection", (socket) => {
-    console.log("connected")
+    // console.log(socket.handshake.auth)
+    re++
+    // roomUsers.push({
+
+    // })
+
+    // socket.join("all");
+    // socket.broadcast("updated_users", allRoomUsers.push({ user: {} }))
+
+    console.log("join")
+    socket.on("add_user", (data) => {
+        // allRoomUsers.push(data);
+        // io.emit("active_users", allRoomUsers);
+        // console.log(re, allRoomUsers);
+        console.log("add")
+    });
+
+    socket.on("hello", (cb) => {
+        // cb(socket.id)
+        // console.log("Hello");
+        socket.join("room")
+    });
+
+    socket.on("disconnect", (id) => {
+        console.log("diss")
+        allRoomUsers = allRoomUsers.filter(user => user.id !== socket.id)
+            // io.emit("active_users", allRoomUsers)
+            // console.log("disconnect", allRoomUsers)
+    })
 });
 
 app.use("/api/users", require("./routes/userRoutes"))

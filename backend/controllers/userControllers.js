@@ -8,20 +8,23 @@ const validator = (value) => Boolean(value) && value.length >= 2;
 const registerUser = async(req, res) => {
     const { username, password, repeatPassword } = req.body;
 
-    console.log(username, password, repeatPassword);
-
     if (!validator(username) ||
         !validator(password) ||
         !validator(repeatPassword)
     ) {
         return res.status(400).json({ message: "Fill all details" });
     }
+
     if (password !== repeatPassword) {
         return res.status(400).json({ message: "Passwords do not match" });
     }
 
     try {
+        const duplicate = await User.findOne({ username });
 
+        if (duplicate) {
+            return res.status(400).json({ message: "Username exists" })
+        }
         const hashedPassword = await bcrypt.hash(password, 6);
         const user = await User.create({ username, password: hashedPassword });
 
@@ -61,5 +64,6 @@ const logIn = async(req, res) => {
 }
 
 module.exports = {
-    registerUser
+    registerUser,
+    logIn
 }

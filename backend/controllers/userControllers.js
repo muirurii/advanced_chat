@@ -5,6 +5,32 @@ const User = require("../models/User");
 
 const validator = (value) => Boolean(value) && value.length >= 2;
 
+const filterUserDetails = (res, user) => {
+    const { _id, username, profilePic, messages } = user;
+    const token = jwt.sign({ _id, username }, process.env.ACCESS_SECRET, {
+        expiresIn: "1d",
+    });
+    const refresh = jwt.sign({ _id, username },
+        process.env.REFRESH_SECRET, { expiresIn: "10 days" }
+    );
+    if (res)
+        res.cookie("chat_room", refresh, {
+            maxAge: 24 * 60 * 60 * 1000 * 10,
+            httpOnly: true,
+            sameSite: "None",
+            path: "/",
+            secure: true,
+        });
+    return {
+        _id,
+        username,
+        messages,
+        profilePic,
+        token,
+    };
+};
+
+
 const registerUser = async(req, res) => {
     const { username, password, repeatPassword } = req.body;
 
@@ -27,11 +53,9 @@ const registerUser = async(req, res) => {
         }
         const hashedPassword = await bcrypt.hash(password, 6);
         const user = await User.create({ username, password: hashedPassword });
-
-        res.json({ user })
+        res.json({ user: filterUserDetails(res, user) })
     } catch (error) {
-        console.log(error.message)
-        res.json({ message: "Server error" })
+        res.status(400).json({ message: "Unable  to register. Try again!" })
     }
 }
 
@@ -56,10 +80,10 @@ const logIn = async(req, res) => {
             return res.status(401).json({ message: "Wrong credentials" });
         }
 
-        res.json({ user })
+        res.json({ user: filterUserDetails(res, user) })
     } catch (error) {
         console.log(error.message)
-        res.json({ message: "Server error" })
+        res.status(400).json({ message: "Unable  to signin. Try again!" })
     }
 }
 

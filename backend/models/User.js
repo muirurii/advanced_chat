@@ -8,6 +8,14 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    messages: {
+        type: [mongoose.SchemaTypes.ObjectId],
+        default: []
+    },
+    profilePic: {
+        type: String,
+        default: "/test.jpg"
     }
 }, {
     timestamps: true

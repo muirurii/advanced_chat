@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer components {
+    html {
+        scroll-behavior: smooth;
+    }
+    body {
+        margin: 0;
+        font-family: "QuickSand", BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    code {
+        font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+        color: #0077ff;
+    }
+    @layer utilities {
+        .w-screen3x {
+            scroll-snap-type: mandatory;
+        }
+        .w-screen3x>section {
+            scroll-snap-align: center;
+        }
+        .home-card>* {
+            opacity: 0;
+            @apply duration-500;
+            @apply transition-opacity;
+        }
+        .active.home-card>* {
+            opacity: 100;
+        }
+        .active {
+            @apply transform-none;
+            pointer-events: all;
+            z-index: 4;
+        }
+        .cta>svg {
+            height: 2rem;
+        }
+        .text-secondary {
+            color: #01b460;
+        }
+        .border-secondary {
+            border-color: #01b460;
+        }
+        .bg-secondary {
+            background-color: #01b460;
+        }
+        .gradient {
+            background: radial-gradient(at center bottom, #1a0a01, #332b01);
+        }
+        .form-layout {}
+        .card {
+            @apply backdrop-blur-sm;
+            background-color: #0000003d;
+        }
+    }
+}

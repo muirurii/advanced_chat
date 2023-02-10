@@ -4,17 +4,20 @@ const path = require("path");
 const cors = require("cors");
 require("dotenv").config({ path: path.join(__dirname, "..", ".env"), });
 const PORT = process.env.PORT || 5000;
+const cookieParser = require("cookie-parser");
 const connection = require("./config/db");
 connection();
 
 const app = express();
 const httpServer = createServer(app);
 
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 const allowedOrigins = [
     "http://localhost:3000",
     "http://127.0.0.2:5500",
+    undefined
 ];
 
 const corsOptions = {
@@ -33,6 +36,8 @@ app.use(cors(corsOptions));
 
 const { Server } = require("socket.io");
 const io = new Server(httpServer, { cors: { origin: "*" }, });
+
+app.use("/api/users", require("./routes/userRoutes"))
 
 let allRoomUsers = [];
 let re = 0;
@@ -69,7 +74,6 @@ io.on("connection", (socket) => {
     })
 });
 
-app.use("/api/users", require("./routes/userRoutes"))
 
 app.get('*', (req, res) => res.send("ttt"))
 

@@ -1,4 +1,3 @@
-
 import {useEffect} from "react";
 
 
@@ -10,7 +9,14 @@ const ChatLink = () =>{
             // socket.disconnect();
         }
     });
-  return <p className="p-3 border-t border-[#48c44810]" >Chat link</p>
+  return <p className="p-3 border-b border-[#ccc3]" >Chat link</p>
 }
 
+export const ChatLoading = () =>{
+    return(
+        <p className="p-3 border-b border-[#ccc3] animate-pulse" >
+            <span className="text-transparent block w-24 h-4 rounded-sm bg-[#ccc3]"></span>
+        </p>
+    );
+}
 export default ChatLink

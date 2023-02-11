@@ -4,9 +4,9 @@ import SignIn from "../components/SignIn";
 import SignUp from "../components/Signup";
 import {RiSendPlaneFill} from "react-icons/ri";
 import { ContextTypes, User } from "../Types";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import { Context } from "../context";
-import { setUser } from "../context/actions/setUser";
+import { setUser } from "../context/actions/userActions";
 
 
 
@@ -16,7 +16,7 @@ const Home = () => {
   const context:ContextTypes = useContext(Context);
   const {dispatch} =context;
 
-  const navigator = useNavigate();
+  const navigator:NavigateFunction = useNavigate();
 
   const handleSetUser = ({user}:{user:User}):void=>{
       setUser(dispatch,user);

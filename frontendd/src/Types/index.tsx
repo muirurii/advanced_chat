@@ -1,13 +1,30 @@
 import { Dispatch } from "react";
 
+interface Message {
+    from:string;
+    to:string;
+    body:string;
+    createdAt:string;
+}
+
+interface Friend {
+    username:string;
+    _id:string;
+    isOnline: boolean;
+}
+
 export interface User {
-    user:{ isLogged:boolean;
-     _id:string;
-     username:string,
-     token:string;
-     messages:[],
-     profilePic:""
-    },
+     isLogged:boolean;
+    _id:string;
+    username:string,
+    token:string;
+    messages:Message[];
+    friends:Friend[];
+    profilePic:"";
+}
+
+export interface State {
+    user:User,
     menu: boolean,
 }
 
@@ -22,6 +39,6 @@ export interface FormParams {
 }
 
 export interface ContextTypes {
-    user:User,
+    state:State;
     dispatch:Dispatch<any>;
 }

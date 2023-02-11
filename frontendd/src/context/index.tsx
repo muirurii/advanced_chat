@@ -1,15 +1,16 @@
 import { useReducer, createContext , ReactNode} from "react";
 import { userReducer } from "./reducers/userReducers";
-import { Action, User } from "../Types";
+import { Action,State } from "../Types";
 
 
-const initialState : User = {
+const initialState : State = {
   user: {
     isLogged: false,
     _id: "",
     username: "",
     token: "",
     messages: [],
+    friends:[],
     profilePic: "",
   },
   menu: false,
@@ -17,7 +18,7 @@ const initialState : User = {
 
 export const Context:any = createContext({});
 
-const combineReducers = (...reducers:[any]) => (state:User, action:Action) => {
+const combineReducers = (...reducers:[any]) => (state:State, action:Action) => {
     // console.log(reducers)
     for (let i = 0; i < reducers.length; i++) {
       state = reducers[i](state, action);

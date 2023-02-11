@@ -4,16 +4,14 @@
 @layer components {
     html {
         scroll-behavior: smooth;
+        --darkYellow: #011a1aad;
+        --lightYellow: #fffd7698;
     }
     body {
         margin: 0;
         font-family: "QuickSand", BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-    }
-    code {
-        font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-        color: #0077ff;
     }
     @layer utilities {
         .w-screen3x {
@@ -24,7 +22,7 @@
         }
         .home-card>* {
             opacity: 0;
-            @apply duration-500;
+            @apply duration-300;
             @apply transition-opacity;
         }
         .active.home-card>* {
@@ -38,17 +36,16 @@
         .cta>svg {
             height: 2rem;
         }
-        .text-secondary {
-            color: #01b460;
-        }
-        .border-secondary {
-            border-color: #01b460;
-        }
-        .bg-secondary {
-            background-color: #01b460;
-        }
         .gradient {
-            background: radial-gradient(at center bottom, #1a0a01, #332b01);
+            background: radial-gradient(at center bottom, var(--darkYellow), var(--lightYellow));
+        }
+        .loading-chat::after {
+            animation: load-chat 1200ms infinite ease-in-out;
+        }
+        @keyframes load-chat {
+            to {
+                left: 100%;
+            }
         }
         .form-layout {}
         .card {

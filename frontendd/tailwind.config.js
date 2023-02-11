@@ -11,7 +11,7 @@ module.exports = {
                 main: [" Poppins,sans-serif;"],
             },
             colors: {
-                // secondary: "#0077ff",
+                secondary: "#0077ff",
             },
             height: {
                 screenLessHeader: "calc(100vh - 0px)",

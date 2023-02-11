@@ -1,13 +1,18 @@
 import actionTypes from "../actions"
-import { Action, User } from "../../Types"
+import { State,User } from "../../Types"
 
-export const userReducer = (state:User, action:Action):User => {
+
+export const userReducer = (state:State, action:{type:string,payload:User}):State => {
     switch (action.type) {
         case actionTypes.SET_USER:
+            console.log(action.payload)
             {
                 return {
                     ...state,
-                    user: action.payload
+                    user:{
+                        ...action.payload,
+                        isLogged:true
+                    }
                 }
             }
         default:

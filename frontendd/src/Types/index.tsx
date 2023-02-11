@@ -7,7 +7,7 @@ interface Message {
     createdAt:string;
 }
 
-interface Friend {
+export interface Friend {
     username:string;
     _id:string;
     isOnline: boolean;
@@ -19,6 +19,10 @@ export interface User {
     username:string,
     token:string;
     messages:Message[];
+    conversation:{
+        status:boolean;
+        friendName:string;
+    }
     friends:Friend[];
     profilePic:"";
 }

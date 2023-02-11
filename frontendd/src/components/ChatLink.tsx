@@ -1,7 +1,8 @@
 import {useEffect} from "react";
+import { Friend } from "../Types";
 
 
-const ChatLink = () =>{
+const ChatLink = ({friend}:{friend:Friend}) =>{
     useEffect(()=>{
         // socket.emit("open_chat",{from:"User1",to:"User2"});
         
@@ -9,7 +10,7 @@ const ChatLink = () =>{
             // socket.disconnect();
         }
     });
-  return <p className="p-3 border-b border-[#ccc3]" >Chat link</p>
+  return <p className="p-3 border-b border-[#ccc3]" >{friend.username}</p>
 }
 
 export const ChatLoading = () =>{

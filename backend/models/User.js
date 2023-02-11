@@ -16,6 +16,27 @@ const UserSchema = new mongoose.Schema({
     profilePic: {
         type: String,
         default: "/test.jpg"
+    },
+    friends: {
+        type: [mongoose.SchemaTypes.ObjectId],
+        default: []
+    },
+    formerFriends: {
+        type: [mongoose.SchemaTypes.ObjectId],
+        ref: "User",
+        default: []
+    },
+    requests: {
+        sent: {
+            type: [mongoose.SchemaTypes.ObjectId],
+            ref: "User",
+            default: []
+        },
+        recieved: {
+            type: [mongoose.SchemaTypes.ObjectId],
+            ref: "User",
+            default: []
+        }
     }
 }, {
     timestamps: true

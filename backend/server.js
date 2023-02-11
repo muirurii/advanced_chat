@@ -40,11 +40,9 @@ const io = new Server(httpServer, { cors: { origin: "*" }, });
 app.use("/api/users", require("./routes/userRoutes"))
 
 let allRoomUsers = [];
-let re = 0;
 
 io.on("connection", (socket) => {
     // console.log(socket.handshake.auth)
-    re++
     // roomUsers.push({
 
     // })
@@ -52,12 +50,13 @@ io.on("connection", (socket) => {
     // socket.join("all");
     // socket.broadcast("updated_users", allRoomUsers.push({ user: {} }))
 
-    console.log("join")
-    socket.on("add_user", (data) => {
-        // allRoomUsers.push(data);
-        // io.emit("active_users", allRoomUsers);
-        // console.log(re, allRoomUsers);
-        console.log("add")
+    // console.log("join")
+    socket.on("add_user", (data, cb) => {
+        cb()
+        io.emit("active_users", allRoomUsers);
+        allRoomUsers = allRoomUsers.filter(user => user.username !== data.username);
+        allRoomUsers.push(data);
+        console.log(allRoomUsers, data);
     });
 
     socket.on("hello", (cb) => {
@@ -67,10 +66,9 @@ io.on("connection", (socket) => {
     });
 
     socket.on("disconnect", (id) => {
-        console.log("diss")
         allRoomUsers = allRoomUsers.filter(user => user.id !== socket.id)
-            // io.emit("active_users", allRoomUsers)
-            // console.log("disconnect", allRoomUsers)
+        io.emit("active_users", allRoomUsers)
+            // console.log("disconnect", allRoomUsers, socket.id)
     })
 });
 

@@ -55,7 +55,7 @@ const registerUser = async(req, res) => {
         const user = await User.create({ username, password: hashedPassword });
         res.json({ user: filterUserDetails(res, user) })
     } catch (error) {
-        res.status(400).json({ message: "Unable  to register. Try again!" })
+        res.status(500).json({ message: "Unable  to register. Try again!" })
     }
 }
 
@@ -83,11 +83,52 @@ const logIn = async(req, res) => {
         res.json({ user: filterUserDetails(res, user) })
     } catch (error) {
         console.log(error.message)
-        res.status(400).json({ message: "Unable  to signin. Try again!" })
+        res.status(500).json({ message: "Unable  to signin. Try again!" })
+    }
+}
+
+const getUser = async(req, res) => {
+    if (!req.cookies && !req.cookies.chat_room) return res.sendStatus(401);
+    const refToken = req.cookies.chat_room;
+
+    jwt.verify(refToken, process.env.REFRESH_SECRET, async(error, decoded) => {
+        if (error) {
+            res.status(401).json({ message: "invalid details" });
+        } else {
+            const { _id } = decoded;
+            const user = await User.findById(_id);
+            const filtered = filterUserDetails(res, user);
+            res.json({
+                user: filtered,
+            });
+        }
+    });
+}
+
+const getFriends = async(req, res) => {
+    const { authId, authName } = req.auth;
+
+    if (!authId.length) {
+        return res.sendStatus(401);
+    }
+
+    try {
+        const user = await User.findById(authId);
+        const populated = await user.populate({
+            path: "friends",
+            select: "username _id profilePic",
+            model: "User",
+        });
+
+        res.json({ friends: populated.friends });
+    } catch (error) {
+        res.status(500).json({ message: "Unable to load friends" })
     }
 }
 
 module.exports = {
     registerUser,
-    logIn
+    getUser,
+    logIn,
+    getFriends,
 }

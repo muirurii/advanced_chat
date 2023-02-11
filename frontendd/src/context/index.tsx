@@ -9,7 +9,11 @@ const initialState : State = {
     _id: "",
     username: "",
     token: "",
-    messages: [],
+    messages:[],
+    conversation:{
+      status:false,
+      friendName:"",
+    },
     friends:[],
     profilePic: "",
   },

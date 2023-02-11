@@ -11,11 +11,9 @@ const verifyToken = (req, res, next) => {
 
     jwt.verify(token, process.env.ACCESS_SECRET, (error, decoded) => {
         if (error) {
-            console.log(error)
             res.status(401).json({ message: "invalid details" });
         } else {
             const { _id, username } = decoded;
-            console.log(decoded)
             req.auth = {
                 authId: _id,
                 authName: username,

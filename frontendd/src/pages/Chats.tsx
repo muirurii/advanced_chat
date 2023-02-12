@@ -1,38 +1,56 @@
-import { BiGroup } from "react-icons/bi";
-import { RiChatPrivateLine } from "react-icons/ri";
+import { RiChatPrivateLine, RiSendPlaneFill } from "react-icons/ri";
 import ChatLink, { ChatLoading } from "../components/ChatLink";
+import Messages from "../components/Messages";
 import { io } from "socket.io-client";
 import { useEffect } from "react";
 import { useContext, useState } from "react";
 import { Context } from "../context";
-import { ContextTypes } from "../Types";
+import { ContextTypes, MessageTypes } from "../Types";
 import customFetch from "../customFunctions/customFetch";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { setFriends, toggleOnline } from "../context/actions/userActions";
+import { setFriends, toggleOnline,setMessages } from "../context/actions/userActions";
 
 const socket = io("http://localhost:5000");
 const Chats = () => {
   const context: ContextTypes = useContext(Context);
-  const { state:{user: { username, token, isLogged,friends }},dispatch} = context;
+  const {
+    state: {
+      user: { username, token, isLogged, friends ,conversation,messages},
+    },
+    dispatch,
+  } = context;
 
   const [loading, setLoading] = useState<boolean>(true);
+  const [message,setMessage] = useState<string>("");
 
   const navigate: NavigateFunction = useNavigate();
+
+  const handleSend: React.FormEventHandler<HTMLFormElement> = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    if(!message.length) return;
+    socket.emit("send_text",{
+       from:username,
+      to:conversation.friendName,
+      body:message,
+     });
+  };
 
   useEffect(() => {
     if (!isLogged) {
       return navigate("/");
       // socket.disconnect();
     }
-    console.log(context);
 
     const getFriends = async () => {
       try {
         const res = await customFetch("users/friends", "GET", {}, token);
-        if(res.success){
-          setFriends(dispatch,res.data.friends);
+        if (res.success) {
+          setFriends(dispatch, res.data.friends);
           setLoading(false);
-        }else{
+        } else {
           throw new Error(res.error.message);
         }
 
@@ -40,13 +58,19 @@ const Chats = () => {
           console.log("conn");
         });
 
-        socket.emit("add_user", { id: socket.id, username },()=>console.log(3));
+        socket.emit("add_user", { id: socket.id, username }, () => []);
 
-        socket.on("active_users", (data: any) => {
-          // toggleOnline(dispatch,)
+        socket.on("active_users", (data: { username: string }[]) => {
+          toggleOnline(dispatch, data);
+          // console.log(context.state, data);
         });
+
+        socket.on("new_text",(data:any)=>{
+          setMessages(dispatch,[...messages,data]);
+          console.log([...messages,data],"new");
+        })
       } catch (error) {
-        console.log(error)
+        console.log(error);
         socket.disconnect();
       }
     };
@@ -62,13 +86,12 @@ const Chats = () => {
   return (
     <section className="pt-[100px] gradient min-h-screen pb-16 min-w-screen">
       <section className="w-[900px] h-[450px] mx-auto flex gap-x-4">
-        <section
-          className="w-[400px] h-full backdrop-blur-sm card rounded overflow-hidden"        >
+        <section className="w-[400px] h-full backdrop-blur-sm card rounded overflow-hidden">
           <h1
             className={`backdrop-blur-sm bg-secondary text-lg py-3 px-5 flex items-center justify-start gap-x-2`}
           >
             <RiChatPrivateLine />
-           <span>Private Chats</span>
+            <span>Private Chats</span>
           </h1>
           <section
             className={`${
@@ -83,31 +106,43 @@ const Chats = () => {
           >
             {!loading ? (
               <>
-              {
-                friends.map((friend=> <div key={friend._id}><ChatLink friend={friend}/></div>))
-              }
+                {friends.map((friend) => (
+                  <div key={friend._id}>
+                    <ChatLink friend={friend} />
+                  </div>
+                ))}
               </>
-            ) : <>
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-            </>}
+            ) : (
+              <>
+                <ChatLoading /><ChatLoading /><ChatLoading /><ChatLoading /><ChatLoading />
+                <ChatLoading /><ChatLoading /><ChatLoading /><ChatLoading /><ChatLoading /><ChatLoading />
+              </>
+            )}
           </section>
         </section>
         <section
-        className={`h-full w-full backdrop-blur-sm card rounded overflow-hidden last:border-[#ccc3]`}>
-          <h1 className="text-lg py-3 px-5 bg-secondary">Select a chat</h1>
-          {/* <section className ="flex items-center justify-center">
-            <p> </p>
-          </section> */}
+          className={`
+        relative h-full w-full backdrop-blur-sm card rounded
+        overflow-hidden last:border-[#ccc3]
+        `}
+        >
+          <Messages />
+          <form
+            onSubmit={handleSend}
+            className="absolute top-full left-0 w-full -translate-y-full bg-green-400"
+          >
+            <div className="flex">
+              <input 
+              type="text" 
+              className="w-full" 
+              value={message}
+              onChange={(e)=> setMessage(e.target.value)}
+              />
+              <button className="bg-secondary p-4">
+                <RiSendPlaneFill />
+              </button>
+            </div>
+          </form>
         </section>
       </section>
     </section>

@@ -32,7 +32,7 @@ const UserSchema = new mongoose.Schema({
             ref: "User",
             default: []
         },
-        recieved: {
+        received: {
             type: [mongoose.SchemaTypes.ObjectId],
             ref: "User",
             default: []

@@ -1,17 +1,18 @@
 import actionTypes from "../actions";
-import { State } from "../../Types";
+import { FriendTypes, StateTypes } from "../../Types";
 
 export const userReducer = (
-  state: State,
+  state: StateTypes,
   action: { type: string; payload: any }
-): State => {
+): StateTypes => {
   switch (action.type) {
     case actionTypes.SET_USER:
       return {
         ...state,
         user: {
-          ...action.payload.user,
-          conversation: {
+            ...state.user,
+            ...action.payload.user,
+            conversation: {
             status: false,
             friendName: "",
           },
@@ -23,7 +24,7 @@ export const userReducer = (
         ...state,
         user: {
           ...state.user,
-          friends: action.payload,
+          friends: action.payload.map((friend:FriendTypes) => ({...friend, isOnline:false})),
         },
       };
     case actionTypes.TOGGLE_ONLINE:
@@ -31,13 +32,36 @@ export const userReducer = (
         ...state,
         user: {
           ...state.user,
-          friends: state.user.friends.map((friend) =>
-            friend.username === action.payload.username
-              ? { ...friend, isOnline: action.payload.value }
-              : friend
-          ),
+          friends: state.user.friends.map((friend) =>{
+              return action.payload.some((user:{username:string})=>user.username === friend.username) ?{
+                ...friend,
+                isOnline:true
+            } :{
+                ...friend,
+                isOnline:false
+            }
+        }),
         },
       };
+      case actionTypes.TOGGLE_CONVERSATION:
+        return {
+            ...state,
+            user:{
+                ...state.user,
+                conversation:action.payload
+            }
+        }
+      case actionTypes.SET_MESSAGES:
+        return {
+            ...state,
+            user:{
+                ...state.user,
+               messages:[
+                ...state.user.messages,
+                ...action.payload
+               ]
+            }
+        }
     default:
       return state;
   }

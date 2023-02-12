@@ -1,34 +1,35 @@
 import { Dispatch } from "react";
 
-interface Message {
+export interface MessageTypes {
+    _id:string;
     from:string;
     to:string;
     body:string;
     createdAt:string;
 }
 
-export interface Friend {
+export interface FriendTypes {
     username:string;
     _id:string;
     isOnline: boolean;
 }
 
-export interface User {
+export interface UserTypes {
      isLogged:boolean;
     _id:string;
     username:string,
     token:string;
-    messages:Message[];
+    messages:MessageTypes[];
     conversation:{
         status:boolean;
         friendName:string;
     }
-    friends:Friend[];
+    friends:FriendTypes[];
     profilePic:"";
 }
 
-export interface State {
-    user:User,
+export interface StateTypes {
+    user:UserTypes,
     menu: boolean,
 }
 
@@ -39,10 +40,10 @@ export interface Action {
 
 export interface FormParams {
     setTab: (value:number)=> void;
-    setUser: ({user}:{user: User})=> void;
+    setUser: ({user}:{user: UserTypes})=> void;
 }
 
 export interface ContextTypes {
-    state:State;
+    state:StateTypes;
     dispatch:Dispatch<any>;
 }

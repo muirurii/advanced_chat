@@ -35,34 +35,42 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 const { Server } = require("socket.io");
+const verifyToken = require("./middleware/verifyJWT");
 const io = new Server(httpServer, { cors: { origin: "*" }, });
 
 app.use("/api/users", require("./routes/userRoutes"))
 
+app.use(verifyToken);
+
+app.use("/api/messages", require("./routes/messageRoutes"))
+
 let allRoomUsers = [];
 
 io.on("connection", (socket) => {
-    // console.log(socket.handshake.auth)
-    // roomUsers.push({
 
-    // })
-
-    // socket.join("all");
-    // socket.broadcast("updated_users", allRoomUsers.push({ user: {} }))
-
-    // console.log("join")
     socket.on("add_user", (data, cb) => {
-        cb()
-        io.emit("active_users", allRoomUsers);
+        socket.join(data.username);
         allRoomUsers = allRoomUsers.filter(user => user.username !== data.username);
         allRoomUsers.push(data);
-        console.log(allRoomUsers, data);
+        // console.log(allRoomUsers)s;
+        // io.sockets.in(socket.rooms).emit("active_users", allRoomUsers)
+        io.emit("active_users", allRoomUsers);
     });
 
-    socket.on("hello", (cb) => {
+    socket.on("send_text", async(data) => {
         // cb(socket.id)
-        // console.log("Hello");
-        socket.join("room")
+        // console.log(socket.rooms)
+        console.log(data);
+        const { from, to, body } = data;
+        const sendMessage = require("./controllers/messageControllers").sendMessage;
+        const savedM = await sendMessage({
+            from,
+            to,
+            body,
+        });
+        console.log(savedM, "sav")
+        socket.to(to).emit("new_text", savedM);
+        // socket.join("room");
     });
 
     socket.on("disconnect", (id) => {

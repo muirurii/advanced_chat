@@ -3,7 +3,7 @@ import {BiLogIn} from "react-icons/bi";
 import {FormEvent, useState, ChangeEvent}  from "react";
 import { RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 import customFetch from "../customFunctions/customFetch";
-import { FormParams,User } from "../Types";
+import { FormParams,UserTypes } from "../Types";
 
 
 interface FormTypes {
@@ -49,7 +49,7 @@ const SignUp = ({setTab,setUser}:FormParams) => {
         const res =  await customFetch("users/new","POST",formData,"");
         
         if(res.success){
-          const user:User = res.data;
+          const user:UserTypes = res.data;
             setUser({user});
           }else{
             throw new Error(res.error.message)

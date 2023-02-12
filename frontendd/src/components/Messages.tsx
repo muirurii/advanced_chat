@@ -38,13 +38,13 @@ const Messages = () => {
   return !conversation.status ? (
     <h1 className="text-lg py-3 px-5 bg-secondary">Please select a chat</h1>
   ) : (
-    <section className="w-full h-full overflow-scroll">
-      <h1 className="text-lg py-3 px-5 bg-secondary absolute top-0 left-0 w-full">
+    <section className="w-full h-full overflow-y-scroll">
+      <h1 className="text-lg py-3 px-5 bg-secondary absolute top-0 left-0 w-full z-10">
         {conversation.friendName}
       </h1>
-      <section className="w-full min-h-full h-fit py-12 px-2 flex flex-col justify-start align-start">
+      <section className="-z-10 w-full min-h-full h-fit py-12 px-2 flex flex-col justify-start align-start">
         {
-        messages.map((message)=> <Message key={message._id} message={message} username={username} />)
+        messages.map((message,index)=> <Message isLast={messages.length === index+1} key={message._id} message={message} username={username} />)
         }
       </section>
     </section>

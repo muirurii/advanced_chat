@@ -3,7 +3,7 @@ import FormLayout from "../components/FormLayout";
 import SignIn from "../components/SignIn";
 import SignUp from "../components/Signup";
 import {RiSendPlaneFill} from "react-icons/ri";
-import { ContextTypes, User } from "../Types";
+import { ContextTypes, UserTypes } from "../Types";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { Context } from "../context";
 import { setUser } from "../context/actions/userActions";
@@ -18,7 +18,7 @@ const Home = () => {
 
   const navigator:NavigateFunction = useNavigate();
 
-  const handleSetUser = ({user}:{user:User}):void=>{
+  const handleSetUser = ({user}:{user:UserTypes}):void=>{
       setUser(dispatch,user);
     navigator("/chats");
   }

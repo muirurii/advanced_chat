@@ -58,9 +58,9 @@ io.on("connection", (socket) => {
     });
 
     socket.on("send_text", async(data) => {
-        // cb(socket.id)
+        // console.log(data)
         // console.log(socket.rooms)
-        console.log(data);
+        // console.log(data);
         const { from, to, body } = data;
         const sendMessage = require("./controllers/messageControllers").sendMessage;
         const savedM = await sendMessage({
@@ -68,8 +68,9 @@ io.on("connection", (socket) => {
             to,
             body,
         });
-        console.log(savedM, "sav")
-        socket.to(to).emit("new_text", savedM);
+        // console.log(savedM, "sav")
+        console.log(data, "dara")
+        socket.to(from).to(to).emit("new_text", savedM);
         // socket.join("room");
     });
 

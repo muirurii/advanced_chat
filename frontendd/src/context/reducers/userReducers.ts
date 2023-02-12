@@ -52,13 +52,16 @@ export const userReducer = (
             }
         }
       case actionTypes.SET_MESSAGES:
+        console.log(action.payload);
+        console.log(action.payload.filter((newMess:{_id:string})=> !state.user.messages.some(oldMess => oldMess._id === newMess._id)));
+        // const filtered = state.user.messages.filter(m=> )
         return {
             ...state,
             user:{
                 ...state.user,
                messages:[
                 ...state.user.messages,
-                ...action.payload
+                ...action.payload.filter((newMess:{_id:string})=> !state.user.messages.some(oldMess => oldMess._id === newMess._id) )
                ]
             }
         }

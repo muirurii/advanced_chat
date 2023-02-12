@@ -1,9 +1,9 @@
 import { useReducer, createContext , ReactNode} from "react";
 import { userReducer } from "./reducers/userReducers";
-import { Action,State } from "../Types";
+import { Action,StateTypes } from "../Types";
 
 
-const initialState : State = {
+const initialState : StateTypes = {
   user: {
     isLogged: false,
     _id: "",
@@ -22,7 +22,7 @@ const initialState : State = {
 
 export const Context:any = createContext({});
 
-const combineReducers = (...reducers:[any]) => (state:State, action:Action) => {
+const combineReducers = (...reducers:[any]) => (state:StateTypes, action:Action) => {
     // console.log(reducers)
     for (let i = 0; i < reducers.length; i++) {
       state = reducers[i](state, action);

@@ -35,7 +35,8 @@ const Chats = () => {
        from:username,
       to:conversation.friendName,
       body:message,
-     });
+     },()=> console.log(23412));
+    
   };
 
   useEffect(() => {
@@ -66,7 +67,7 @@ const Chats = () => {
         });
 
         socket.on("new_text",(data:any)=>{
-          setMessages(dispatch,[...messages,data]);
+          setMessages(dispatch,[data]);
           console.log([...messages,data],"new");
         })
       } catch (error) {
@@ -86,7 +87,7 @@ const Chats = () => {
   return (
     <section className="pt-[100px] gradient min-h-screen pb-16 min-w-screen">
       <section className="w-[900px] h-[450px] mx-auto flex gap-x-4">
-        <section className="w-[400px] h-full backdrop-blur-sm card rounded overflow-hidden">
+        <section className="w-[400px] h-full backdrop-blur-sm card rounded border border-secondary overflow-hidden">
           <h1
             className={`backdrop-blur-sm bg-secondary text-lg py-3 px-5 flex items-center justify-start gap-x-2`}
           >
@@ -122,19 +123,19 @@ const Chats = () => {
         </section>
         <section
           className={`
-        relative h-full w-full backdrop-blur-sm card rounded
-        overflow-hidden last:border-[#ccc3]
+        relative h-full w-full backdrop-blur-sm card rounded border border-secondary
+        overflow-hidden
         `}
         >
           <Messages />
           <form
             onSubmit={handleSend}
-            className="absolute top-full left-0 w-full -translate-y-full bg-green-400"
+            className="absolute top-full left-0 w-full -translate-y-full"
           >
             <div className="flex">
-              <input 
-              type="text" 
-              className="w-full" 
+              <input
+              type="text"
+              className="w-full text-black pl-2 outline-none card border-t border-secondary"
               value={message}
               onChange={(e)=> setMessage(e.target.value)}
               />

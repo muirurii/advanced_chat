@@ -12,7 +12,7 @@ const sendMessage = async(data) => {
 const getMessages = async(req, res) => {
     const to = req.params.username;
     const from = req.auth.authName;
-    console.log(from, to)
+
     try {
         const messages = await Message.find({
             $or: [{

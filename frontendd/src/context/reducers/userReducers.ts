@@ -10,9 +10,9 @@ export const userReducer = (
       return {
         ...state,
         user: {
-            ...state.user,
-            ...action.payload.user,
-            conversation: {
+          ...state.user,
+          ...action.payload.user,
+          conversation: {
             status: false,
             friendName: "",
           },
@@ -24,7 +24,10 @@ export const userReducer = (
         ...state,
         user: {
           ...state.user,
-          friends: action.payload.map((friend:FriendTypes) => ({...friend, isOnline:false})),
+          friends: action.payload.map((friend: FriendTypes) => ({
+            ...friend,
+            isOnline: false,
+          })),
         },
       };
     case actionTypes.TOGGLE_ONLINE:
@@ -32,39 +35,51 @@ export const userReducer = (
         ...state,
         user: {
           ...state.user,
-          friends: state.user.friends.map((friend) =>{
-              return action.payload.some((user:{username:string})=>user.username === friend.username) ?{
-                ...friend,
-                isOnline:true
-            } :{
-                ...friend,
-                isOnline:false
-            }
-        }),
+          friends: state.user.friends.map((friend) => {
+            return action.payload.some(
+              (user: { username: string }) => user.username === friend.username
+            )
+              ? {
+                  ...friend,
+                  isOnline: true,
+                }
+              : {
+                  ...friend,
+                  isOnline: false,
+                };
+          }),
         },
       };
-      case actionTypes.TOGGLE_CONVERSATION:
-        return {
-            ...state,
-            user:{
-                ...state.user,
-                conversation:action.payload
-            }
-        }
-      case actionTypes.SET_MESSAGES:
-        console.log(action.payload);
-        console.log(action.payload.filter((newMess:{_id:string})=> !state.user.messages.some(oldMess => oldMess._id === newMess._id)));
-        // const filtered = state.user.messages.filter(m=> )
-        return {
-            ...state,
-            user:{
-                ...state.user,
-               messages:[
-                ...state.user.messages,
-                ...action.payload.filter((newMess:{_id:string})=> !state.user.messages.some(oldMess => oldMess._id === newMess._id) )
-               ]
-            }
-        }
+    case actionTypes.TOGGLE_CONVERSATION:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          conversation: action.payload,
+        },
+      };
+    case actionTypes.SET_MESSAGES:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          messages: [
+            ...action.payload,
+          ],
+        },
+      };
+    case actionTypes.SET_MESSAGE:
+
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          messages: [
+            ...state.user.messages.filter(mess => mess._id !== action.payload._id),
+            action.payload
+          ],
+        },
+      };
     default:
       return state;
   }

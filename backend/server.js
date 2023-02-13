@@ -69,9 +69,10 @@ io.on("connection", (socket) => {
             body,
         });
         // console.log(savedM, "sav")
-        console.log(data, "dara")
-        socket.to(from).to(to).emit("new_text", savedM);
-        // socket.join("room");
+        // console.log(io.)
+        io.in(from).in(to).emit("new_text", savedM)
+            // socket.to(from).to(to).emit("new_text", savedM);
+            // socket.join("room");
     });
 
     socket.on("disconnect", (id) => {

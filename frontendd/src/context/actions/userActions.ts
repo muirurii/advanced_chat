@@ -33,3 +33,9 @@ export const setMessages = (dispatch:Dispatch<any>, data:MessageTypes[]):void =>
         payload: data
     });
 }
+export const setNewMessage = (dispatch:Dispatch<any>, data:MessageTypes):void => {
+    dispatch({
+        type: actionTypes.SET_MESSAGE,
+        payload: data
+    });
+}

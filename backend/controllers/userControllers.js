@@ -14,7 +14,7 @@ const filterUserDetails = (res, user) => {
         process.env.REFRESH_SECRET, { expiresIn: "10 days" }
     );
     if (res)
-        res.cookie("chat_room", refresh, {
+        res.cookie("chat_room7", refresh, {
             maxAge: 24 * 60 * 60 * 1000 * 10,
             httpOnly: true,
             sameSite: "None",

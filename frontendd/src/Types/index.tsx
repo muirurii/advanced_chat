@@ -8,6 +8,10 @@ export interface MessageTypes {
     createdAt:string;
 }
 
+export interface DummyMessageTypes {
+    float:boolean;
+    text:string;
+}
 export interface FriendTypes {
     username:string;
     _id:string;

@@ -2,8 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 @layer components {
-    html {
+    .scroll {
         scroll-behavior: smooth;
+    }
+     ::-webkit-scrollbar {
+        width: 8px;
+        @apply bg-transparent;
+    }
+     ::-webkit-scrollbar-thumb {
+        background-color: #0000003d;
+        border-radius: 20px;
+    }
+     ::-webkit-scrollbar-thumb:hover {
+        @apply bg-gray-600;
+    }
+     ::-webkit-scrollbar-track {
+        @apply w-0;
+    }
+    html {
         --darkYellow: #011a1aad;
         --lightYellow: #fffd7698;
     }

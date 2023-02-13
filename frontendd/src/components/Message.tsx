@@ -1,29 +1,21 @@
 import { useEffect, useRef } from "react";
-import { MessageTypes } from "../Types";
+import { DummyMessageTypes, MessageTypes } from "../Types";
 
 const Message = ({
   message,
   username,
-  isLast,
 }: {
   message: MessageTypes;
   username: string;
-  isLast: boolean;
 }) => {
-  // const lastEl:React.MutableRefObject<HTMLElement> = useRef();
-  const fromMe: boolean = message.from === username;
 
-  useEffect(() => {
-    // console.log(isLast ? "" : message.body);
-    // window.scrollTo(400,-window.innerHeight)
-  }, []);
+  const fromMe: boolean = message.from === username;
 
   return (
     <article
-      className={`${fromMe ? "self-end" : "border border-secondary"}
-        rounded-lg card py-2 px-4 w-fit my-4
+      className={`${fromMe ? "self-end card" : "bg-[#ccc7]"}
+        rounded-lg py-2 px-4 w-fit my-4
     `}
-      // ref={lastEl}
     >
       <h5 className="text-secondary text-xs">
         {fromMe ? "You" : message.from}
@@ -37,5 +29,18 @@ const Message = ({
     </article>
   );
 };
+
+
+export const MessageLoading = ({float,text}:DummyMessageTypes) =>{
+ return <article
+      className={`${float ? "self-end" : ""}
+        rounded-lg py-2 px-4 my-4 card text-transparent text-xs max-w-[300px]
+    `}
+    >
+      <h5 className="animate-pulse rounded"><span className="bg-[#ccc3]">You</span></h5>
+      <p className="rounded animate-pulse"><span className="bg-[#ccc3]">{text}</span></p>
+      <p className="rounded"><span className="bg-[#ccc3] animate-pulse">12:00 PM</span></p>
+    </article>
+}
 
 export default Message;

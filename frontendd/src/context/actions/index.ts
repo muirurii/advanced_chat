@@ -5,6 +5,7 @@ const actionTypes: {
   TOGGLE_CONVERSATION: string;
   SET_MESSAGES: string;
   SET_MESSAGE: string;
+  SET_TAB: string;
 } = {
   SET_USER: "set_user",
   SET_FRIENDS: "set_token",
@@ -12,6 +13,7 @@ const actionTypes: {
   TOGGLE_CONVERSATION: "toggle_conversation",
   SET_MESSAGES:"set_messages",
   SET_MESSAGE:"set_message",
+  SET_TAB:"set_tab",
 };
 
 export default actionTypes;

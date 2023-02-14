@@ -17,7 +17,9 @@ const initialState : StateTypes = {
     friends:[],
     profilePic: "",
   },
-  menu: false,
+  menu: {
+    activeTab:""
+  }
 };
 
 export const Context:any = createContext({});

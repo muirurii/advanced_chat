@@ -80,6 +80,13 @@ export const userReducer = (
           ],
         },
       };
+    case actionTypes.SET_TAB:
+      return {
+        ...state,
+        menu:{
+          activeTab:action.payload
+        }
+      }
     default:
       return state;
   }

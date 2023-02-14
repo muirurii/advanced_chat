@@ -1,4 +1,4 @@
-import { useContext, useState} from "react";
+import { useContext, useState,useEffect} from "react";
 import FormLayout from "../components/FormLayout";
 import SignIn from "../components/SignIn";
 import SignUp from "../components/Signup";
@@ -6,7 +6,7 @@ import {RiSendPlaneFill} from "react-icons/ri";
 import { ContextTypes, UserTypes } from "../Types";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { Context } from "../context";
-import { setUser } from "../context/actions/userActions";
+import { setTab, setUser } from "../context/actions/userActions";
 
 
 
@@ -16,11 +16,15 @@ const Home = () => {
   const context:ContextTypes = useContext(Context);
   const {dispatch} =context;
 
+  useEffect(()=>{
+    setTab(dispatch,"home")
+  },[]);
+
   const navigator:NavigateFunction = useNavigate();
 
-  const handleSetUser = ({user}:{user:UserTypes}):void=>{
+  const handleSetUser = ({user,redirectPath}:{user:UserTypes,redirectPath:string},):void=>{
       setUser(dispatch,user);
-    navigator("/chats");
+    navigator(redirectPath);
   }
 
   const handleClick = (value:number)=>{

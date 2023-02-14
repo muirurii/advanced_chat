@@ -10,6 +10,7 @@ import {
   setFriends,
   toggleOnline,
   setNewMessage,
+  setTab,
 } from "../context/actions/userActions";
 import ChatLinks from "../components/ChatLinks";
 import MessageForm from "../components/MessageForm";
@@ -56,7 +57,7 @@ const Chats = () => {
     if (!isLogged) {
       return navigate("/");
     }
-
+    setTab(dispatch,"chats");
     const getFriends = async () => {
       try {
         const res = await customFetch("users/friends", "GET", {}, token);

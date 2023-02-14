@@ -50,7 +50,7 @@ const SignUp = ({setTab,setUser}:FormParams) => {
         
         if(res.success){
           const user:UserTypes = res.data;
-            setUser({user});
+            setUser({user,redirectPath:"/profile"});
           }else{
             throw new Error(res.error.message)
           }

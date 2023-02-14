@@ -48,8 +48,8 @@ const SignIn = ({setTab,setUser}:FormParams) => {
     try {
       const res = await customFetch("users/signin","POST",formData,"");
       if(res.success){
-        const user:UserTypes = res.data;
-        setUser({user});
+        const user = res.data;
+        setUser({user,redirectPath:"/chats"});
       }else{
         throw new Error(res.error.message);
       }

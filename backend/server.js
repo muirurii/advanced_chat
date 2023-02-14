@@ -35,14 +35,11 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 const { Server } = require("socket.io");
-const verifyToken = require("./middleware/verifyJWT");
+// const verifyToken = require("./middleware/verifyJWT");
 const io = new Server(httpServer, { cors: { origin: "*" }, });
 
-app.use("/api/users", require("./routes/userRoutes"))
-
-app.use(verifyToken);
-
-app.use("/api/messages", require("./routes/messageRoutes"))
+app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/messages", require("./routes/messageRoutes"));
 
 let allRoomUsers = [];
 

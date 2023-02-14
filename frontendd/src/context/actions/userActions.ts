@@ -39,3 +39,9 @@ export const setNewMessage = (dispatch:Dispatch<any>, data:MessageTypes):void =>
         payload: data
     });
 }
+export const setTab = (dispatch:Dispatch<any>, value:string):void => {
+    dispatch({
+        type: actionTypes.SET_TAB,
+        payload: value
+    });
+}

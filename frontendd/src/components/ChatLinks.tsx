@@ -8,7 +8,7 @@ const ChatLinks = ({ loading }: { loading: boolean }) => {
   const context: ContextTypes = useContext(Context);
   const {
     state: {
-      user: { username, friends },
+      user: { friends },
     },
   } = context;
 
@@ -18,7 +18,7 @@ const ChatLinks = ({ loading }: { loading: boolean }) => {
         className={`backdrop-blur-sm bg-secondary text-sm py-3 px-5 flex items-center justify-start gap-x-2`}
       >
         <RiChatPrivateLine />
-        <span>{username} Chats</span>
+        <span>Friends</span>
       </h1>
       <section
         className={`${

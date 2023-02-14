@@ -10,10 +10,11 @@ const filterUserDetails = (res, user) => {
     const token = jwt.sign({ _id, username }, process.env.ACCESS_SECRET, {
         expiresIn: "1d",
     });
-    const refresh = jwt.sign({ _id, username },
-        process.env.REFRESH_SECRET, { expiresIn: "10 days" }
-    );
-    if (res)
+
+    if (res) {
+        const refresh = jwt.sign({ _id, username }, process.env.REFRESH_SECRET, {
+            expiresIn: "10 days",
+        });
         res.cookie("chat_room7", refresh, {
             maxAge: 24 * 60 * 60 * 1000 * 10,
             httpOnly: true,
@@ -21,6 +22,7 @@ const filterUserDetails = (res, user) => {
             path: "/",
             secure: true,
         });
+    }
     return {
         _id,
         username,
@@ -29,7 +31,6 @@ const filterUserDetails = (res, user) => {
         token,
     };
 };
-
 
 const registerUser = async(req, res) => {
     const { username, password, repeatPassword } = req.body;
@@ -49,15 +50,15 @@ const registerUser = async(req, res) => {
         const duplicate = await User.findOne({ username });
 
         if (duplicate) {
-            return res.status(400).json({ message: "Username exists" })
+            return res.status(400).json({ message: "Username exists" });
         }
         const hashedPassword = await bcrypt.hash(password, 6);
         const user = await User.create({ username, password: hashedPassword });
-        res.json({ user: filterUserDetails(res, user) })
+        res.json({ user: filterUserDetails(res, user) });
     } catch (error) {
-        res.status(500).json({ message: "Unable  to register. Try again!" })
+        res.status(500).json({ message: "Unable  to register. Try again!" });
     }
-}
+};
 
 const logIn = async(req, res) => {
     const { username, password } = req.body;
@@ -67,7 +68,6 @@ const logIn = async(req, res) => {
     }
 
     try {
-
         const user = await User.findOne({ username });
 
         if (user === null) {
@@ -80,12 +80,12 @@ const logIn = async(req, res) => {
             return res.status(401).json({ message: "Wrong credentials" });
         }
 
-        res.json({ user: filterUserDetails(res, user) })
+        res.json({ user: filterUserDetails(res, user) });
     } catch (error) {
-        console.log(error.message)
-        res.status(500).json({ message: "Unable  to signin. Try again!" })
+        console.log(error.message);
+        res.status(500).json({ message: "Unable  to signin. Try again!" });
     }
-}
+};
 
 const getUser = async(req, res) => {
     if (!req.cookies && !req.cookies.chat_room) return res.sendStatus(401);
@@ -103,7 +103,7 @@ const getUser = async(req, res) => {
             });
         }
     });
-}
+};
 
 const getFriends = async(req, res) => {
     const { authId, authName } = req.auth;
@@ -122,13 +122,63 @@ const getFriends = async(req, res) => {
 
         res.json({ friends: populated.friends });
     } catch (error) {
-        res.status(500).json({ message: "Unable to load friends" })
+        res.status(500).json({ message: "Unable to load friends" });
     }
-}
+};
+
+const addFriend = async(req, res) => {
+    const { authId } = req.auth;
+    const { friendName } = req.body;
+
+    if (!friendName) {
+        return res.sendStatus(400);
+    }
+
+    try {
+        const user = await User.findById(authId);
+        const newFriend = await User.findOne({ username: friendName });
+
+        if (!user || !newFriend) return res.sendStatus(400);
+        if (user.friends.includes(newFriend._id)) return res.status(400).json({ message: "Friend is already added" });
+
+        newFriend.friends.push(user._id);
+        user.friends.push(newFriend._id);
+
+        await newFriend.save();
+        await user.save();
+
+        res.json({
+            newFriend: {
+                username: newFriend.username,
+                _id: newFriend._id,
+                profilePic: newFriend.profilePic
+            },
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Unable to add friend" });
+    }
+};
+const getUsers = async(req, res) => {
+    const { authId, authName } = req.auth;
+
+    try {
+        const users = await User.find({
+                username: { $ne: authName },
+                friends: { $nin: [authId] }
+            })
+            .select("username _id profilePic");
+
+        res.json({ users });
+    } catch (error) {
+        res.status(500).json({ message: "Unable to get friends" });
+    }
+};
 
 module.exports = {
     registerUser,
     getUser,
     logIn,
     getFriends,
-}
+    addFriend,
+    getUsers,
+};

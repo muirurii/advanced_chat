@@ -36,8 +36,8 @@ const ChatLink = ({ friend }: { friend: FriendTypes }) => {
 
 export const ChatLoading = () => {
   return (
-    <p className="p-3 border-b border-[#ccc3] animate-pulse">
-      <span className="text-transparent block w-24 h-4 rounded-sm bg-[#ccc3]"></span>
+    <p className="p-3 border-b border-[#ccc5] animate-pulse">
+      <span className="text-transparent block w-24 h-4 rounded-sm bg-[#ccc5]"></span>
     </p>
   );
 };

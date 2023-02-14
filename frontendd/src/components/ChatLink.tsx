@@ -28,7 +28,7 @@ const ChatLink = ({ friend }: { friend: FriendTypes }) => {
     >
       <img
       className={`w-10 h-10 rounded-full object-cover`}
-      src="/static/media/pexels-photo-295826.bfda032ce23d05acfb5e.jpeg" alt="Not fou" />
+      src="/images/pexels-photo-188035.jpeg" alt="User" />
       <p>{friend.username}</p>
     </section>
   );

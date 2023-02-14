@@ -5,19 +5,30 @@ import dummyMessages from "../assets/images/dummyMessages";
 import { Context } from "../context";
 import { setConversation, setMessages } from "../context/actions/userActions";
 import customFetch from "../customFunctions/customFetch";
-import { ContextTypes, DummyMessageTypes } from "../Types";
+import { ContextTypes } from "../Types";
 import Message, { MessageLoading } from "./Message";
+
+let scrollTimeout: any;
 
 const Messages = () => {
   const context: ContextTypes = useContext(Context);
   const {
     state: {
-      user: { conversation, token, messages, username },
+      user: {
+        conversation: { friendName, status },
+        token,
+        messages,
+        username,
+        friends,
+      },
     },
     dispatch,
   } = context;
 
   const [loading, setLoading] = useState<boolean>(true);
+  const isOnline = friends.some(
+    (friend) => friend.username === friendName && friend.isOnline
+  );
 
   const scrollRef = useRef<HTMLButtonElement>(null);
   setTimeout(() => {
@@ -26,11 +37,11 @@ const Messages = () => {
 
   useEffect(() => {
     const getMessages = async () => {
-      if (!conversation.status) return;
+      if (!status) return;
       setLoading(true);
       try {
         const res = await customFetch(
-          `messages/${conversation.friendName}`,
+          `messages/${friendName}`,
           "GET",
           {},
           token
@@ -50,17 +61,20 @@ const Messages = () => {
       }
     };
     getMessages();
-  }, [conversation.friendName]);
+  }, [friendName]);
 
-  return !conversation.status ? (
+
+  return !status ? (
     <h1 className="text-sm text-center py-3 px-5 bg-secondary">
       Select a chat
     </h1>
   ) : (
-    <section className="w-full h-full overflow-y-scroll scroll">
+    <section
+      className="w-full h-full overflow-y-scroll scroll"
+    >
       <button
         ref={scrollRef}
-        className="absolute bottom-16 right-5 rounded-full p-2 bg-secondary cursor-pointer z-40"
+        className="absolute bottom-14 right-0 rounded-full p-1 bg-secondary cursor-pointer z-40"
         onClick={(e) => {
           e.currentTarget.parentElement?.scrollBy(
             0,
@@ -82,21 +96,29 @@ const Messages = () => {
           <RiArrowLeftLine />
         </button>
         <h1 className="text-sm py-3 text-center w-full">
-          {conversation.friendName}
+          <p>
+            {friendName}
+            {isOnline ? (
+              <>
+                <span className="h-2 w-2 bg-white rounded-full mx-2 inline-block"></span>
+                <span className="text-xs pt-1">online</span>
+              </>
+            ) : null}
+          </p>
         </h1>
       </section>
-      <section className="-z-10 w-full min-h-full h-fit py-12 px-2 flex flex-col justify-start align-start">
-        {!loading
-          ? messages.map((message) => (
-              <Message
-                key={message._id}
-                message={message}
-                username={username}
-              />
-            ))
-          : dummyMessages.map((message) => (
-              <MessageLoading float={message.float} text={message.text} />
-            ))}
+      <section className="-z-10 w-full min-h-full h-fit py-14 px-2 flex flex-col justify-start align-start">
+        {loading ? (
+          dummyMessages.map((message) => (
+            <MessageLoading float={message.float} text={message.text} />
+          ))
+        ) : !messages.length ? (
+          <p className="text-center text-sm">Send a message to {friendName}</p>
+        ) : (
+          messages.map((message) => (
+            <Message key={message._id} message={message} username={username} />
+          ))
+        )}
       </section>
     </section>
   );

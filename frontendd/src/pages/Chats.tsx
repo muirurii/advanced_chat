@@ -69,7 +69,7 @@ const Chats = () => {
         }
 
         socket.on("connect", () => {
-          console.log("conn");
+          // console.log("conn");
         });
 
         socket.emit("add_user", { id: socket.id, username }, () => []);
@@ -80,10 +80,8 @@ const Chats = () => {
 
         socket.on("new_text", (data: MessageTypes) => {
           setNewMessage(dispatch, data);
-          console.log(data, "new");
         });
       } catch (error) {
-        console.log(error);
         socket.disconnect();
       }
     };
@@ -91,19 +89,24 @@ const Chats = () => {
     getFriends();
 
     return () => {
-      console.log("diss");
       // socket.disconnect();
     };
   }, []);
 
   return (
     <section className="pt-[100px] gradient min-h-screen pb-16">
-      <section className="w-[1200px] h-[450px] mx-auto flex gap-x-4">
+      <section className="h-[450px] mx-auto flex md:gap-x-4 justify-center px-2">
         <ChatLinks loading={loading} />
+        {/* <section className="w-[80px] h-full border border-secondary rounded rounded-tr-none rounded-br-none">
+        <h1 className="text-sm p-3 text-center w-full bg-secondary">Menu</h1>
+        </section> */}
         <section
           className={`
-        relative h-full w-full backdrop-blur-sm card rounded border border-secondary
-        overflow-hidden
+        h-[450px] w-full md:max-w-[700px] backdrop-blur-sm card
+        rounded border border-secondary overflow-hidden transition-transform duration-300
+        ${conversation.status ? "relative" : `absolute top-[100px] z-20
+        translate-x-full opacity-10
+        md:relative md:transform-none md:top-0 md:opacity-100`}
         `}
         >
           <Messages />
@@ -112,7 +115,6 @@ const Chats = () => {
           ) : null
           }
         </section>
-        <ChatLinks loading={loading}/>
       </section>
     </section>
   );

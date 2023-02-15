@@ -6,8 +6,13 @@ import { ContextTypes } from "../Types";
 
 const ChatLink = ({ friend }: { friend: FriendTypes }) => {
   const context: ContextTypes = useContext(Context);
-  const { dispatch,state:{user:{conversation}} } = context;
- 
+  const {
+    dispatch,
+    state: {
+      user: { conversation },
+    },
+  } = context;
+
   const handleClick: MouseEventHandler<HTMLElement> = (
     event: React.MouseEvent<HTMLElement, MouseEvent>
   ) => {
@@ -20,16 +25,18 @@ const ChatLink = ({ friend }: { friend: FriendTypes }) => {
       transition-colors duration-300 cursor-pointer
     ${conversation.friendName === friend.username ? "card" : null}
       ${
-    friend.isOnline
-      ? "relative after:absolute after:top-1/2 after:-translate-y-1/2 after:right-1 after:h-2 after:w-2 after:bg-secondary after:rounded-full"
-      : null
-  }`}
+        friend.isOnline
+          ? "relative after:absolute after:top-1/2 after:-translate-y-1/2 after:right-1 after:h-2 after:w-2 after:bg-secondary after:rounded-full"
+          : null
+      }`}
       onClick={handleClick}
     >
       <img
-      className={`w-10 h-10 rounded-full object-cover`}
-      src="/images/pexels-photo-188035.jpeg" alt="User" />
-      <p>{friend.username}</p>
+        className={`w-10 h-10 rounded-full object-cover`}
+        src="/images/pexels-photo-188035.jpeg"
+        alt="User"
+      />
+      <p className="text-sm">{friend.username}</p>
     </section>
   );
 };

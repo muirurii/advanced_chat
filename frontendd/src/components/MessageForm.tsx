@@ -9,9 +9,9 @@ const MessageForm = ({
   setMessage,
   message,
 }: {
-  handleSend: React.FormEventHandler<HTMLFormElement>,
-  setMessage:React.Dispatch<React.SetStateAction<string>>,
-  message:string
+  handleSend: React.FormEventHandler<HTMLFormElement>;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
+  message: string;
 }) => {
   const context: ContextTypes = useContext(Context);
   const {

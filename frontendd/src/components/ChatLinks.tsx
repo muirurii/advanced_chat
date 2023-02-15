@@ -8,17 +8,26 @@ const ChatLinks = ({ loading }: { loading: boolean }) => {
   const context: ContextTypes = useContext(Context);
   const {
     state: {
-      user: { friends,conversation:{status} },
+      user: {
+        friends,
+        conversation: { status },
+      },
     },
   } = context;
 
   return (
-    <section className={`md:max-w-[320px] w-full h-[450px] backdrop-blur-sm card rounded 
+    <section
+      className={`md:max-w-[320px] w-full h-[450px] backdrop-blur-sm card rounded 
     border border-secondary overflow-hidden transition-all duration-300
-   ${!status ? "relative" : `absolute top-[100px] z-20
+   ${
+     !status
+       ? "relative"
+       : `absolute top-[100px] z-20
    -translate-x-full opacity-10
-   md:relative md:transform-none md:top-0 md:opacity-100`}
-  `}>
+   md:relative md:transform-none md:top-0 md:opacity-100`
+   }
+  `}
+    >
       <h1
         className={`backdrop-blur-sm bg-secondary text-sm
         py-3 px-5 flex items-center justify-start gap-x-2
@@ -39,32 +48,32 @@ const ChatLinks = ({ loading }: { loading: boolean }) => {
             : "last:border-[#ccc3]"
         }`}
       >
-      <section className="h-fit">
-        {!loading ? (
-          <>
-            {friends.map((friend) => (
-              <div key={friend._id}>
-                <ChatLink friend={friend} />
-              </div>
-            ))}
-          </>
-        ) : (
-          <>
-            <ChatLoading />
-            <ChatLoading />
-            <ChatLoading />
-            <ChatLoading />
-            <ChatLoading />
-            <ChatLoading />
-            <ChatLoading />
-            <ChatLoading />
-            <ChatLoading />
-            <ChatLoading />
-          </>
-        )}
+        <section className="h-fit">
+          {!loading ? (
+            <>
+              {friends.map((friend) => (
+                <div key={friend._id}>
+                  <ChatLink friend={friend} />
+                </div>
+              ))}
+            </>
+          ) : (
+            <>
+              <ChatLoading />
+              <ChatLoading />
+              <ChatLoading />
+              <ChatLoading />
+              <ChatLoading />
+              <ChatLoading />
+              <ChatLoading />
+              <ChatLoading />
+              <ChatLoading />
+              <ChatLoading />
+            </>
+          )}
         </section>
       </section>
-      </section>
+    </section>
   );
 };
 

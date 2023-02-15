@@ -20,25 +20,27 @@ const Header = () => {
     >
       <nav>
         <ul className="w-screen flex justify-center items-center gap-4 sm:gap-6 px-4">
-          <li
-            className={`w-fit h-fit relative`}
-          >
+          <li className={`w-fit h-fit relative`}>
             <Link to="/">
-              <RiHomeLine className={`${activeTab === "home" ? "fill-secondary" : null}`} />
+              <RiHomeLine
+                className={`${activeTab === "home" ? "fill-secondary" : null}`}
+              />
             </Link>
           </li>
-          <li
-            className={`w-fit h-fit relative`}
-          >
+          <li className={`w-fit h-fit relative`}>
             <Link to="/chats">
-              <RiChat1Line className={`${activeTab === "chats" ? "fill-secondary" : null}`} />
+              <RiChat1Line
+                className={`${activeTab === "chats" ? "fill-secondary" : null}`}
+              />
             </Link>
           </li>
-          <li
-            className={`w-fit h-fit relative`}
-          >
+          <li className={`w-fit h-fit relative`}>
             <Link to="/profile">
-              <RiContactsLine className={`${activeTab === "profile" ? "fill-secondary" : null}`} />
+              <RiContactsLine
+                className={`${
+                  activeTab === "profile" ? "fill-secondary" : null
+                }`}
+              />
             </Link>
           </li>
         </ul>

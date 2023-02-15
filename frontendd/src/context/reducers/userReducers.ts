@@ -63,30 +63,29 @@ export const userReducer = (
         ...state,
         user: {
           ...state.user,
-          messages: [
-            ...action.payload,
-          ],
+          messages: [...action.payload],
         },
       };
     case actionTypes.SET_MESSAGE:
-
       return {
         ...state,
         user: {
           ...state.user,
           messages: [
-            ...state.user.messages.filter(mess => mess._id !== action.payload._id),
-            action.payload
+            ...state.user.messages.filter(
+              (mess) => mess._id !== action.payload._id
+            ),
+            action.payload,
           ],
         },
       };
     case actionTypes.SET_TAB:
       return {
         ...state,
-        menu:{
-          activeTab:action.payload
-        }
-      }
+        menu: {
+          activeTab: action.payload,
+        },
+      };
     default:
       return state;
   }

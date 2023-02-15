@@ -46,7 +46,13 @@ export interface Action {
 
 export interface FormParams {
   setTab: (value: number) => void;
-  setUser: ({ user ,redirectPath}: { user: UserTypes,redirectPath :string}) => void;
+  setUser: ({
+    user,
+    redirectPath,
+  }: {
+    user: UserTypes;
+    redirectPath: string;
+  }) => void;
 }
 
 export interface ContextTypes {

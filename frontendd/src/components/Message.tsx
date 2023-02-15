@@ -14,14 +14,14 @@ const Message = ({
   return (
     <article
       className={`${fromMe ? "self-end card" : "bg-[#ccc7]"}
-        rounded-lg py-2 px-4 w-fit my-4
+        rounded-lg py-2 px-4 min-w-[150px] w-fit max-w-[260px] my-4 break-words
     `}
     >
-      <h5 className="text-secondary text-xs">
+      <h5 className="text-secondary text-xs pb-1">
         {fromMe ? "You" : message.from}
       </h5>
-      <p className="text-sm">{message.body}</p>
-      <p className="text-[8px]">
+      <p className="text-xs">{message.body}</p>
+      <p className="text-[8px] pt-1">
         {new Date(message.createdAt).toLocaleTimeString("en-US",{
           timeStyle:"short"
         })}

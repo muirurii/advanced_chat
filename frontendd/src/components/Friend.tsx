@@ -1,7 +1,13 @@
 import { RiUserAddLine } from "react-icons/ri";
 import { FriendTypes } from "../Types";
 
-const Friend = ({user,addFriend}:{user:FriendTypes,addFriend:(friendName:string)=>Promise<void>}) => {
+const Friend = ({
+  user,
+  addFriend,
+}: {
+  user: FriendTypes;
+  addFriend: (friendName: string) => Promise<void>;
+}) => {
   return (
     <section className="w-full border-b border-[#ccc3] gap-x-2 p-2 flex justify-between">
       <section className="flex items-center justify-start w-full gap-x-2">
@@ -16,9 +22,9 @@ const Friend = ({user,addFriend}:{user:FriendTypes,addFriend:(friendName:string)
         <button
           className="bg-secondary flex items-center justify-center gap-x-1
       rounded-full py-2 px-4 text-sm"
-      onClick={(e)=>{
-        addFriend(user.username);
-      }}
+          onClick={(e) => {
+            addFriend(user.username);
+          }}
         >
           Add <RiUserAddLine />
         </button>

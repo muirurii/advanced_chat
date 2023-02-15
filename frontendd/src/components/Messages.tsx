@@ -63,15 +63,12 @@ const Messages = () => {
     getMessages();
   }, [friendName]);
 
-
   return !status ? (
     <h1 className="text-sm text-center py-3 px-5 bg-secondary">
       Select a chat
     </h1>
   ) : (
-    <section
-      className="w-full h-full overflow-y-scroll scroll"
-    >
+    <section className="w-full h-full overflow-y-scroll scroll">
       <button
         ref={scrollRef}
         className="absolute bottom-14 right-0 rounded-full p-1 bg-secondary cursor-pointer z-40"

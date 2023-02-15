@@ -57,7 +57,7 @@ const Chats = () => {
     if (!isLogged) {
       return navigate("/");
     }
-    setTab(dispatch,"chats");
+    setTab(dispatch, "chats");
     const getFriends = async () => {
       try {
         const res = await customFetch("users/friends", "GET", {}, token);
@@ -94,26 +94,30 @@ const Chats = () => {
   }, []);
 
   return (
-    <section className="pt-[100px] gradient min-h-screen pb-16">
+    <section className="pt-[100px] gradient min-h-screen">
       <section className="h-[450px] mx-auto flex md:gap-x-4 justify-center px-2">
         <ChatLinks loading={loading} />
-        {/* <section className="w-[80px] h-full border border-secondary rounded rounded-tr-none rounded-br-none">
-        <h1 className="text-sm p-3 text-center w-full bg-secondary">Menu</h1>
-        </section> */}
         <section
           className={`
         h-[450px] w-full md:max-w-[700px] backdrop-blur-sm card
         rounded border border-secondary overflow-hidden transition-transform duration-300
-        ${conversation.status ? "relative" : `absolute top-[100px] z-20
+        ${
+          conversation.status
+            ? "relative"
+            : `absolute top-[100px] z-20
         translate-x-full opacity-10
-        md:relative md:transform-none md:top-0 md:opacity-100`}
+        md:relative md:transform-none md:top-0 md:opacity-100`
+        }
         `}
         >
           <Messages />
           {conversation.status ? (
-           <MessageForm message={message} setMessage={setMessage} handleSend={handleSend} />
-          ) : null
-          }
+            <MessageForm
+              message={message}
+              setMessage={setMessage}
+              handleSend={handleSend}
+            />
+          ) : null}
         </section>
       </section>
     </section>

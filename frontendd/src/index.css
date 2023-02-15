@@ -47,6 +47,7 @@
         .active {
             @apply transform-none;
             pointer-events: all;
+            opacity: 1;
             z-index: 4;
         }
         .cta>svg {

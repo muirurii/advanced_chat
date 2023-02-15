@@ -1,11 +1,9 @@
-import { ReactNode } from 'react'
+import { ReactNode } from "react";
 
-const FormLayout = ({children}:{children:ReactNode}) => {
+const FormLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <section className="card p-4 rounded w-96">
-        {children}
-    </section>
-  )
-}
+    <section className="card p-4 rounded w-full max-w-md">{children}</section>
+  );
+};
 
-export default FormLayout
+export default FormLayout;

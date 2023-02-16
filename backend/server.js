@@ -17,7 +17,7 @@ app.use(express.json());
 const allowedOrigins = [
     "http://localhost:3000",
     "http://localhost:5000",
-    "http://127.0.0.2:5500",
+    "https://advancedchat.onrender.com/",
     undefined
 ];
 

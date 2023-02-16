@@ -23,7 +23,7 @@ const getMessages = async(req, res) => {
                 to: from
             }]
         });
-        // const messages2 = await Message.find({ from: to, to: from });
+
         res.json({ messages });
     } catch (error) {
         res.status(500).json({ message: "Unable to get messages" });

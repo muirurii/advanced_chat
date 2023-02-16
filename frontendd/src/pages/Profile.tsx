@@ -70,7 +70,7 @@ const Profile = () => {
 
   return (
     <section className="min-h-screen min-w-screen gradient pt-[100px] flex flex-col items-center px-2">
-      <section className="max-w-[600px] w-full border border-secondary rounded h-[450px]">
+      <section className="max-w-[600px] w-full border border-secondary rounded h-[450px] overflow-hidden">
         <h1 className="bg-secondary w-full py-2 text-center">Add Friends</h1>
         {loading ? (
           <>
@@ -79,9 +79,13 @@ const Profile = () => {
             <ChatLoading /> <ChatLoading /> <ChatLoading />
           </>
         ) : users.length ? (
-          users.map((user) => (
+        <section className="h-[450px] overflow-y-scroll pb-[40px]">
+          <section className="h-fit">
+         {users.map((user) => (
             <Friend addFriend={addFriend} user={user} key={user._id} />
-          ))
+          ))}
+          </section>
+        </section>
         ) : (
           <p className="text-center text-sm p-2">No new users found</p>
         )}

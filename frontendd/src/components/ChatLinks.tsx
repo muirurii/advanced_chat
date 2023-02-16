@@ -3,6 +3,7 @@ import { ContextTypes } from "../Types";
 import { useContext } from "react";
 import { RiChatPrivateLine } from "react-icons/ri";
 import ChatLink, { ChatLoading } from "./ChatLink";
+import { Link } from "react-router-dom";
 
 const ChatLinks = ({ loading }: { loading: boolean }) => {
   const context: ContextTypes = useContext(Context);
@@ -30,7 +31,7 @@ const ChatLinks = ({ loading }: { loading: boolean }) => {
     >
       <h1
         className={`backdrop-blur-sm bg-secondary text-sm
-        py-3 px-5 flex items-center justify-start gap-x-2
+        py-3 px-5 flex items-center justify-center gap-x-2
         absolute top-0 left-0 w-full z-10
         `}
       >
@@ -49,28 +50,38 @@ const ChatLinks = ({ loading }: { loading: boolean }) => {
         }`}
       >
         <section className="h-fit">
-          {!loading ? (
+          {loading ? (
+            <>
+              <ChatLoading />
+              <ChatLoading />
+              <ChatLoading />
+              <ChatLoading />
+              <ChatLoading />
+              <ChatLoading />
+              <ChatLoading />
+              <ChatLoading />
+              <ChatLoading />
+              <ChatLoading />
+            </>
+          ) : friends.length ? (
             <>
               {friends.map((friend) => (
                 <div key={friend._id}>
                   <ChatLink friend={friend} />
                 </div>
               ))}
-            </>
-          ) : (
-            <>
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-              <ChatLoading />
-            </>
-          )}
+            </>) : (
+              <section className="text-xs text-center pt-2">
+                <p>You have no friends</p>
+           <p>
+            click
+            <a href="" className="inline-block text-secondary underline px-1">
+              <Link to="/profile">here</Link>
+            </a>to add friends
+            </p>
+            </section>
+            )
+          }
         </section>
       </section>
     </section>

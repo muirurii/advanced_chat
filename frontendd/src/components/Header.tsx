@@ -1,14 +1,15 @@
-import { RiChat1Line, RiContactsLine, RiHomeLine } from "react-icons/ri";
+import { RiChat1Line, RiContactsLine, RiHomeLine, RiProfileFill, RiUserHeartLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { Context } from "../context";
 import { ContextTypes } from "../Types";
 import { useContext } from "react";
+import { AiOutlineProfile } from "react-icons/ai";
 
 const Header = () => {
   const context: ContextTypes = useContext(Context);
   const {
     state: {
-      user: { isLogged },
+      user: { isLogged,username },
       menu: { activeTab },
     },
   } = context;
@@ -45,6 +46,14 @@ const Header = () => {
           </li>
         </ul>
       </nav>
+      <section className="fixed top-[50px] left-4 h-fit w-fit px-4 p-2 rounded bg-white
+      flex items-center justify-center gap-x-2">
+        <div className="absolute top-0 left-0 p-1 -translate-y-1/2 -translate-x-1/2
+        bg-white rounded-full shadow-[#ccc8] shadow-md border border-[#ccc3]">
+        <RiUserHeartLine className="fill-secondary" />
+        </div>
+        <p className="text-xs text-secondary">{username}</p>
+      </section>
     </header>
   ) : null;
 };

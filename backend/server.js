@@ -16,6 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 const allowedOrigins = [
     "http://localhost:3000",
+    "http://localhost:5000",
     "http://127.0.0.2:5500",
     undefined
 ];
@@ -35,7 +36,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 const { Server } = require("socket.io");
-// const verifyToken = require("./middleware/verifyJWT");
 const io = new Server(httpServer, { cors: { origin: "*" }, });
 
 app.use("/api/users", require("./routes/userRoutes"));
@@ -49,15 +49,10 @@ io.on("connection", (socket) => {
         socket.join(data.username);
         allRoomUsers = allRoomUsers.filter(user => user.username !== data.username);
         allRoomUsers.push(data);
-        // console.log(allRoomUsers)s;
-        // io.sockets.in(socket.rooms).emit("active_users", allRoomUsers)
         io.emit("active_users", allRoomUsers);
     });
 
     socket.on("send_text", async(data) => {
-        // console.log(data)
-        // console.log(socket.rooms)
-        // console.log(data);
         const { from, to, body } = data;
         const sendMessage = require("./controllers/messageControllers").sendMessage;
         const savedM = await sendMessage({
@@ -65,21 +60,18 @@ io.on("connection", (socket) => {
             to,
             body,
         });
-        // console.log(savedM, "sav")
-        // console.log(io.)
         io.in(from).in(to).emit("new_text", savedM)
-            // socket.to(from).to(to).emit("new_text", savedM);
-            // socket.join("room");
     });
 
     socket.on("disconnect", (id) => {
         allRoomUsers = allRoomUsers.filter(user => user.id !== socket.id)
         io.emit("active_users", allRoomUsers)
-            // console.log("disconnect", allRoomUsers, socket.id)
-    })
+    });
 });
 
-
-app.get('*', (req, res) => res.send("ttt"))
+app.use(express.static(path.join(__dirname, '..', 'frontendd', 'build')));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, "../", "frontendd", "build", "index.html"));
+})
 
 httpServer.listen(PORT, (req, res) => console.log(`server started at port ${PORT}`));

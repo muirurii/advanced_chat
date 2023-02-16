@@ -14,7 +14,7 @@ const Message = ({
   return (
     <article
       className={`${fromMe ? "self-end card" : "bg-[#ccc7]"}
-        rounded-lg py-2 px-4 min-w-[150px] w-fit max-w-[260px] my-4 break-words
+        rounded-lg py-2 px-4 min-w-[100px] w-fit max-w-[260px] my-4 break-words
     `}
     >
       <h5 className="text-secondary text-xs pb-1">

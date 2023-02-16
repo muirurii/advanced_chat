@@ -15,7 +15,7 @@ import {
 import ChatLinks from "../components/ChatLinks";
 import MessageForm from "../components/MessageForm";
 
-const socket = io("http://localhost:5000");
+const socket = io("");
 const Chats = () => {
   const context: ContextTypes = useContext(Context);
   const {

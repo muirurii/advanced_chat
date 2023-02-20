@@ -6,6 +6,8 @@ const actionTypes: {
   SET_MESSAGES: string;
   SET_MESSAGE: string;
   SET_UNREAD_MESSAGES: string;
+  SET_READ_MESSAGES: string;
+  CLEAR_UNREAD_MESSAGES: string;
   SET_MESSAGE_DELIVERED: string;
   SET_TAB: string;
 } = {
@@ -16,6 +18,8 @@ const actionTypes: {
   SET_MESSAGES:"set_messages",
   SET_MESSAGE:"set_message",
   SET_UNREAD_MESSAGES:"set_unread_messages",
+  SET_READ_MESSAGES:"set_read_messages",
+  CLEAR_UNREAD_MESSAGES:"clear_unread_messages",
   SET_MESSAGE_DELIVERED:"set_message_delivered",
   SET_TAB:"set_tab",
 };

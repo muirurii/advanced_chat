@@ -128,12 +128,16 @@ const getFriends = async(req, res) => {
 
 
         const unr = await Message.updateMany({
-            to: authName
+            to: authName,
+            status: {
+                delivered: false
+            }
         }, {
             status: {
+                seen: false,
                 delivered: true
             }
-        })
+        });
 
         // console.log(unr);
 

@@ -1,7 +1,5 @@
-import { useEffect, useRef } from "react";
 import { DummyMessageTypes, MessageTypes } from "../Types";
 import { BiCheck, BiCheckDouble } from "react-icons/bi";
-import { RiCheckLine } from "react-icons/ri";
 
 const Message = ({
   message,
@@ -32,7 +30,7 @@ const Message = ({
         </span>
         {
           !fromMe ? null : delivered  ? (
-          <BiCheckDouble className={`h-3 w-3 ${seen}`} />
+          <BiCheckDouble className={`h-3 w-3 ${seen ? "fill-secondary" : null}`} />
           ) : (
           <BiCheck className="h-3 w-3" />
           )

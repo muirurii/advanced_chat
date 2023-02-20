@@ -59,6 +59,11 @@ io.on("connection", (socket) => {
         io.to(friends).emit("message_delivered", username);
     });
 
+    socket.on("message_seen", ({ friendName, username }) => {
+        console.log("seen by", username)
+        io.to(friendName).emit("message_seen", username);
+    });
+
     socket.on("send_text", async(data) => {
         const { from, to, body } = data;
         const sendMessage = require("./controllers/messageControllers").sendMessage;

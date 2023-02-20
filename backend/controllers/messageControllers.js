@@ -24,8 +24,22 @@ const getMessages = async(req, res) => {
             }]
         });
 
+        const r = await Message.updateMany({
+            to: from,
+            from: to
+        }, {
+            status: {
+                seen: true,
+                delivered: true
+            }
+        });
+
+        console.log(r)
+
         res.json({ messages });
+
     } catch (error) {
+        console.log(error.message)
         res.status(500).json({ message: "Unable to get messages" });
     }
 }

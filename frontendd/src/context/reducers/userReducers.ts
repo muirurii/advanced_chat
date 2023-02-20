@@ -84,6 +84,19 @@ export const userReducer = (
         ...state,
         unreadMessages:action.payload
       };
+    case actionTypes.SET_READ_MESSAGES:
+      return {
+        ...state,
+        user:{
+          ...state.user,
+          messages:state.user.messages.map(message => message.to === action.payload ? {...message,status:{...message.status,seen:true}} : message)
+        }
+      };
+    case actionTypes.CLEAR_UNREAD_MESSAGES:
+      return {
+        ...state,
+        unreadMessages:state.unreadMessages.filter(message => message.from !== action.payload)
+      };
     case actionTypes.SET_MESSAGE_DELIVERED:
       return {
         ...state,

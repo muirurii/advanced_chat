@@ -3,14 +3,17 @@ import { BiChevronsDown } from "react-icons/bi";
 import { RiArrowLeftLine } from "react-icons/ri";
 import dummyMessages from "../assets/images/dummyMessages";
 import { Context } from "../context";
-import { setConversation, setMessages } from "../context/actions/userActions";
+import { clearUnreadMessages, setConversation, setMessages } from "../context/actions/userActions";
 import customFetch from "../customFunctions/customFetch";
 import { ContextTypes } from "../Types";
 import Message, { MessageLoading } from "./Message";
 
-// let scrollTimeout: any;
+interface Props{
+loadingFriends:boolean;
+handleMessageSeen:(data:{username:string,friendName:string}) => void;
+}
 
-const Messages = () => {
+const Messages = ({loadingFriends,handleMessageSeen}:Props) => {
   const context: ContextTypes = useContext(Context);
   const {
     state: {
@@ -36,6 +39,7 @@ const Messages = () => {
   }, 0);
 
   useEffect(() => {
+    if(loadingFriends) return;
     const getMessages = async () => {
       if (!status) return;
       setLoading(true);
@@ -51,7 +55,9 @@ const Messages = () => {
           setTimeout(() => {
             scrollRef.current?.click();
           }, 0);
+          clearUnreadMessages(dispatch,friendName);
           setLoading(false);
+          handleMessageSeen({friendName,username});
         } else {
           throw new Error(res.message);
         }
@@ -61,7 +67,7 @@ const Messages = () => {
       }
     };
     getMessages();
-  }, [friendName]);
+  }, [friendName,loadingFriends]);
 
   return !status ? (
     <h1 className="text-sm text-center py-3 px-5 bg-secondary">

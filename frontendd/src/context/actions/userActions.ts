@@ -66,6 +66,26 @@ export const setUnreadMessages = (
   });
 };
 
+export const setReadMessages = (
+  dispatch: Dispatch<any>,
+  data: string
+): void => {
+  dispatch({
+    type: actionTypes.SET_READ_MESSAGES,
+    payload: data,
+  });
+};
+
+export const clearUnreadMessages = (
+  dispatch: Dispatch<any>,
+  data: string
+): void => {
+  dispatch({
+    type: actionTypes.CLEAR_UNREAD_MESSAGES,
+    payload: data,
+  });
+};
+
 export const setMessageDelivered = (
   dispatch: Dispatch<any>,
   data: string

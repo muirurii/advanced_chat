@@ -13,6 +13,7 @@ import {
   setTab,
   setUnreadMessages,
   setMessageDelivered,
+  setReadMessages,
 } from "../context/actions/userActions";
 import ChatLinks from "../components/ChatLinks";
 import MessageForm from "../components/MessageForm";
@@ -81,8 +82,12 @@ const Chats = () => {
         socket.emit("message_delivered", {friendsNames,username});
 
         socket.on("message_delivered", (data:string) => {
-          console.log(data)
           setMessageDelivered(dispatch,data);
+        });
+
+        socket.on("message_seen", (data:string) => {
+          console.log(data)
+          setReadMessages(dispatch,data);
         });
 
         socket.on("connect", () => {
@@ -111,7 +116,9 @@ const Chats = () => {
     };
   }, []);
 
-  // const
+  const handleMessageSeen = (data:{username:string,friendName:string})=>{
+    socket.emit("message_seen",data );
+  }
 
   return (
     <section className="pt-[100px] gradient min-h-screen">
@@ -130,7 +137,7 @@ const Chats = () => {
         }
         `}
         >
-          <Messages />
+          <Messages loadingFriends={loading} handleMessageSeen={handleMessageSeen} />
           {conversation.status ? (
             <MessageForm
               message={message}

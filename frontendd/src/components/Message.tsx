@@ -31,7 +31,7 @@ const Message = ({
         })}
         </span>
         {
-          delivered ? (
+          !fromMe ? null : delivered  ? (
           <BiCheckDouble className={`h-3 w-3 ${seen}`} />
           ) : (
           <BiCheck className="h-3 w-3" />

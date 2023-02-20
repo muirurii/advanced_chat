@@ -107,7 +107,7 @@ const Messages = () => {
       <section className="-z-10 w-full min-h-full h-fit py-14 px-2 flex flex-col justify-start align-start">
         {loading ? (
           dummyMessages.map((message) => (
-            <MessageLoading float={message.float} text={message.text} />
+            <MessageLoading float={message.float} text={message.text} key={message.text} />
           ))
         ) : !messages.length ? (
           <p className="text-center text-sm">Send a message to {friendName}</p>

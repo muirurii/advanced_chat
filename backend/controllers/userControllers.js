@@ -122,7 +122,20 @@ const getFriends = async(req, res) => {
 
         const unread = await Message.find({
             to: authName,
-        }).where("message.status").equals(false)
+        }).where("message.status.seen").equals(false)
+
+        // .set("message.status.delivered", true);
+
+
+        const unr = await Message.updateMany({
+            to: authName
+        }, {
+            status: {
+                delivered: true
+            }
+        })
+
+        // console.log(unr);
 
         res.json({ friends: user.friends, unread });
     } catch (error) {

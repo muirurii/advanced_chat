@@ -81,6 +81,7 @@ const Chats = () => {
         socket.emit("message_delivered", {friendsNames,username});
 
         socket.on("message_delivered", (data:string) => {
+          console.log(data)
           setMessageDelivered(dispatch,data);
         });
 
@@ -95,8 +96,8 @@ const Chats = () => {
         });
 
         socket.on("new_text", (data: MessageTypes) => {
-          socket.emit("message_delivered", {friendsNames,username});
           setNewMessage(dispatch, data);
+          socket.emit("message_delivered", {friendsNames,username});
         });
       } catch (error) {
         socket.disconnect();

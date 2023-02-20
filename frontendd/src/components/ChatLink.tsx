@@ -10,8 +10,11 @@ const ChatLink = ({ friend }: { friend: FriendTypes }) => {
     dispatch,
     state: {
       user: { conversation },
+      unreadMessages
     },
   } = context;
+
+  const newFromFriend = unreadMessages.filter(message => message.from === friend.username);
 
   const handleClick: MouseEventHandler<HTMLElement> = (
     event: React.MouseEvent<HTMLElement, MouseEvent>
@@ -37,6 +40,12 @@ const ChatLink = ({ friend }: { friend: FriendTypes }) => {
         alt="User"
       />
       <p className="text-sm">{friend.username}</p>
+     {
+     newFromFriend.length ? <span className="bg-secondary text-[8px] h-4 w-4
+      flex items-center justify-center rounded-full">
+        {newFromFriend.length}
+      </span> : null
+      }
     </section>
   );
 };

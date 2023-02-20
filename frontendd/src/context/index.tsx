@@ -17,6 +17,7 @@ const initialState : StateTypes = {
     friends:[],
     profilePic: "",
   },
+  unreadMessages:[],
   menu: {
     activeTab:""
   }

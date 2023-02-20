@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 import { DummyMessageTypes, MessageTypes } from "../Types";
+import { BiCheck, BiCheckDouble } from "react-icons/bi";
+import { RiCheckLine } from "react-icons/ri";
 
 const Message = ({
   message,
@@ -9,7 +11,8 @@ const Message = ({
   username: string;
 }) => {
 
-  const fromMe: boolean = message.from === username;
+  const {from,body,createdAt,status:{delivered,seen}} = message;
+  const fromMe: boolean = from === username;
 
   return (
     <article
@@ -18,13 +21,22 @@ const Message = ({
     `}
     >
       <h5 className="text-secondary text-xs pb-1">
-        {fromMe ? "You" : message.from}
+        {fromMe ? "You" : from}
       </h5>
-      <p className="text-xs">{message.body}</p>
-      <p className="text-[8px] pt-1">
-        {new Date(message.createdAt).toLocaleTimeString("en-US",{
+      <p className="text-xs">{body}</p>
+      <p className="text-[8px] pt-1 flex items-start justify-between">
+       <span>
+        {new Date(createdAt).toLocaleTimeString("en-US",{
           timeStyle:"short"
         })}
+        </span>
+        {
+          delivered ? (
+          <BiCheckDouble className={`h-3 w-3 ${seen}`} />
+          ) : (
+          <BiCheck className="h-3 w-3" />
+          )
+        }
       </p>
     </article>
   );

@@ -6,6 +6,10 @@ export interface MessageTypes {
   to: string;
   body: string;
   createdAt: string;
+  status: {
+    delivered: boolean;
+    seen:boolean;
+  }
 }
 
 export interface DummyMessageTypes {
@@ -34,6 +38,7 @@ export interface UserTypes {
 
 export interface StateTypes {
   user: UserTypes;
+  unreadMessages:MessageTypes[];
   menu: {
     activeTab: string;
   };

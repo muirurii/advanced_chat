@@ -15,10 +15,10 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 const allowedOrigins = [
-    // "http://localhost:3000",
-    // "http://localhost:5000",
+    "http://localhost:3000",
+    "http://localhost:5000",
     "https://advancedchat.onrender.com",
-    // undefined
+    undefined
 ];
 
 const corsOptions = {
@@ -49,7 +49,14 @@ io.on("connection", (socket) => {
         socket.join(data.username);
         allRoomUsers = allRoomUsers.filter(user => user.username !== data.username);
         allRoomUsers.push(data);
-        io.emit("active_users", allRoomUsers);
+        const users = allRoomUsers.map(user => user.username);
+        io.to(users).emit("active_users", allRoomUsers);
+    });
+
+    socket.on("message_delivered", ({ friendsNames, username }) => {
+        const friends = allRoomUsers.filter(user => user.username !== username)
+            .filter(user => friendsNames.some(friend => friend === user.username)).map(user => user.username)
+        io.to(friends).emit("message_delivered", username);
     });
 
     socket.on("send_text", async(data) => {
@@ -64,7 +71,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("disconnect", (id) => {
-        allRoomUsers = allRoomUsers.filter(user => user.id !== socket.id)
+        allRoomUsers = allRoomUsers.filter(user => user.id !== socket.id);
         io.emit("active_users", allRoomUsers)
     });
 });

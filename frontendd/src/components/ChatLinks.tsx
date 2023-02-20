@@ -75,9 +75,9 @@ const ChatLinks = ({ loading }: { loading: boolean }) => {
                 <p>You have no friends</p>
            <p>
             click
-            <a href="" className="inline-block text-secondary underline px-1">
+            <span className="inline-block text-secondary underline px-1">
               <Link to="/profile">here</Link>
-            </a>to add friends
+            </span>to add friends
             </p>
             </section>
             )

@@ -11,16 +11,19 @@ import {
   toggleOnline,
   setNewMessage,
   setTab,
+  setUnreadMessages,
+  setMessageDelivered,
 } from "../context/actions/userActions";
 import ChatLinks from "../components/ChatLinks";
 import MessageForm from "../components/MessageForm";
 
-const socket = io("");
+const socket = io("http://localhost:5000");
 const Chats = () => {
   const context: ContextTypes = useContext(Context);
   const {
     state: {
-      user: { username, token, isLogged, conversation },
+      user: { username, token, isLogged, conversation, friends },
+      unreadMessages,
     },
     dispatch,
   } = context;
@@ -63,10 +66,23 @@ const Chats = () => {
         const res = await customFetch("users/friends", "GET", {}, token);
         if (res.success) {
           setFriends(dispatch, res.data.friends);
+          setUnreadMessages(dispatch, res.data.unread);
           setLoading(false);
         } else {
           throw new Error(res.error.message);
         }
+
+        const friendsNames = friends
+          .filter((friend) =>
+            unreadMessages.some((mess) => mess.from === friend.username)
+          )
+          .map((friend) => friend.username);
+
+        socket.emit("message_delivered", {friendsNames,username});
+
+        socket.on("message_delivered", (data:string) => {
+          setMessageDelivered(dispatch,data);
+        });
 
         socket.on("connect", () => {
           // console.log("conn");
@@ -79,6 +95,7 @@ const Chats = () => {
         });
 
         socket.on("new_text", (data: MessageTypes) => {
+          socket.emit("message_delivered", {friendsNames,username});
           setNewMessage(dispatch, data);
         });
       } catch (error) {
@@ -92,6 +109,8 @@ const Chats = () => {
       // socket.disconnect();
     };
   }, []);
+
+  // const
 
   return (
     <section className="pt-[100px] gradient min-h-screen">

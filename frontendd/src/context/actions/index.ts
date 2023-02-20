@@ -5,6 +5,8 @@ const actionTypes: {
   TOGGLE_CONVERSATION: string;
   SET_MESSAGES: string;
   SET_MESSAGE: string;
+  SET_UNREAD_MESSAGES: string;
+  SET_MESSAGE_DELIVERED: string;
   SET_TAB: string;
 } = {
   SET_USER: "set_user",
@@ -13,6 +15,8 @@ const actionTypes: {
   TOGGLE_CONVERSATION: "toggle_conversation",
   SET_MESSAGES:"set_messages",
   SET_MESSAGE:"set_message",
+  SET_UNREAD_MESSAGES:"set_unread_messages",
+  SET_MESSAGE_DELIVERED:"set_message_delivered",
   SET_TAB:"set_tab",
 };
 

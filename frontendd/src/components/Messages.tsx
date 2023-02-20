@@ -8,7 +8,7 @@ import customFetch from "../customFunctions/customFetch";
 import { ContextTypes } from "../Types";
 import Message, { MessageLoading } from "./Message";
 
-let scrollTimeout: any;
+// let scrollTimeout: any;
 
 const Messages = () => {
   const context: ContextTypes = useContext(Context);

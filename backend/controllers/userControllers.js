@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const Message = require("../models/Message");
 
 const validator = (value) => Boolean(value) && value.length >= 2;
 
@@ -113,14 +114,17 @@ const getFriends = async(req, res) => {
     }
 
     try {
-        const user = await User.findById(authId);
-        const populated = await user.populate({
+        const user = await User.findById(authId).populate({
             path: "friends",
             select: "username _id profilePic",
             model: "User",
         });
 
-        res.json({ friends: populated.friends });
+        const unread = await Message.find({
+            to: authName,
+        }).where("message.status").equals(false)
+
+        res.json({ friends: user.friends, unread });
     } catch (error) {
         res.status(500).json({ message: "Unable to load friends" });
     }

@@ -79,6 +79,19 @@ export const userReducer = (
           ],
         },
       };
+    case actionTypes.SET_UNREAD_MESSAGES:
+      return {
+        ...state,
+        unreadMessages:action.payload
+      };
+    case actionTypes.SET_MESSAGE_DELIVERED:
+      return {
+        ...state,
+        user:{
+          ...state.user,
+          messages:state.user.messages.map(message => message.to === action.payload ? {...message,status:{...message.status,delivered:true}} : message)
+        }
+      };
     case actionTypes.SET_TAB:
       return {
         ...state,

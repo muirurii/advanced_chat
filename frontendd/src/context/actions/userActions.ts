@@ -45,6 +45,7 @@ export const setMessages = (
     payload: data,
   });
 };
+
 export const setNewMessage = (
   dispatch: Dispatch<any>,
   data: MessageTypes
@@ -54,6 +55,27 @@ export const setNewMessage = (
     payload: data,
   });
 };
+
+export const setUnreadMessages = (
+  dispatch: Dispatch<any>,
+  data: MessageTypes[]
+): void => {
+  dispatch({
+    type: actionTypes.SET_UNREAD_MESSAGES,
+    payload: data,
+  });
+};
+
+export const setMessageDelivered = (
+  dispatch: Dispatch<any>,
+  data: string
+): void => {
+  dispatch({
+    type: actionTypes.SET_MESSAGE_DELIVERED,
+    payload: data,
+  });
+};
+
 export const setTab = (dispatch: Dispatch<any>, value: string): void => {
   dispatch({
     type: actionTypes.SET_TAB,

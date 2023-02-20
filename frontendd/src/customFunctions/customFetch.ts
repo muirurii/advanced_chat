@@ -4,7 +4,7 @@ const customFetch = async (
   details: any,
   token: string
 ): Promise<any> => {
-  const formattedURL: string = `http://localhost:5000/api/${endpoint}`;
+  const formattedURL: string = `/api/${endpoint}`;
 
   try {
     const options = method === "GET" ? null : { body: JSON.stringify(details) };

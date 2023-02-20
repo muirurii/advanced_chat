@@ -15,10 +15,10 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 const allowedOrigins = [
-    "http://localhost:3000",
-    "http://localhost:5000",
+    // "http://localhost:3000",
+    // "http://localhost:5000",
     "https://advancedchat.onrender.com",
-    undefined
+    // undefined
 ];
 
 const corsOptions = {

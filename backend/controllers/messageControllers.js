@@ -7,7 +7,7 @@ const sendMessage = async(data) => {
     } catch (error) {
         return { message: error.message };
     }
-}
+};
 
 const getMessages = async(req, res) => {
     const to = req.params.username;
@@ -16,35 +16,34 @@ const getMessages = async(req, res) => {
     try {
         const messages = await Message.find({
             $or: [{
-                from,
-                to,
-            }, {
-                from: to,
-                to: from
-            }]
+                    from,
+                    to,
+                },
+                {
+                    from: to,
+                    to: from,
+                },
+            ],
         });
 
-        const r = await Message.updateMany({
+        await Message.updateMany({
             to: from,
-            from: to
+            from: to,
         }, {
             status: {
                 seen: true,
-                delivered: true
-            }
+                delivered: true,
+            },
         });
 
-        console.log(r)
-
         res.json({ messages });
-
     } catch (error) {
-        console.log(error.message)
+        console.log(error.message);
         res.status(500).json({ message: "Unable to get messages" });
     }
-}
+};
 
 module.exports = {
     sendMessage,
-    getMessages
-}
+    getMessages,
+};

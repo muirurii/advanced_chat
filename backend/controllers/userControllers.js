@@ -121,13 +121,12 @@ const getFriends = async(req, res) => {
         });
 
         const unread = await Message.find({
-            to: authName,
-        }).where("message.status.seen").equals(false)
+                to: authName,
+            })
+            .where("status.seen")
+            .equals(false);
 
-        // .set("message.status.delivered", true);
-
-
-        const unr = await Message.updateMany({
+        await Message.updateMany({
             to: authName,
             status: {
                 delivered: false
@@ -135,14 +134,13 @@ const getFriends = async(req, res) => {
         }, {
             status: {
                 seen: false,
-                delivered: true
-            }
+                delivered: true,
+            },
         });
-
-        // console.log(unr);
 
         res.json({ friends: user.friends, unread });
     } catch (error) {
+        console.log(error.message)
         res.status(500).json({ message: "Unable to load friends" });
     }
 };
@@ -160,7 +158,8 @@ const addFriend = async(req, res) => {
         const newFriend = await User.findOne({ username: friendName });
 
         if (!user || !newFriend) return res.sendStatus(400);
-        if (user.friends.includes(newFriend._id)) return res.status(400).json({ message: "Friend is already added" });
+        if (user.friends.includes(newFriend._id))
+            return res.status(400).json({ message: "Friend is already added" });
 
         newFriend.friends.push(user._id);
         user.friends.push(newFriend._id);
@@ -172,7 +171,7 @@ const addFriend = async(req, res) => {
             newFriend: {
                 username: newFriend.username,
                 _id: newFriend._id,
-                profilePic: newFriend.profilePic
+                profilePic: newFriend.profilePic,
             },
         });
     } catch (error) {
@@ -184,10 +183,9 @@ const getUsers = async(req, res) => {
 
     try {
         const users = await User.find({
-                username: { $ne: authName },
-                friends: { $nin: [authId] }
-            })
-            .select("username _id profilePic");
+            username: { $ne: authName },
+            friends: { $nin: [authId] },
+        }).select("username _id profilePic");
 
         res.json({ users });
     } catch (error) {
